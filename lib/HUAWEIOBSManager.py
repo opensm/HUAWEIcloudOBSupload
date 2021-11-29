@@ -295,7 +295,7 @@ class HUAWEIOBSManager:
         for x in sorted(glob.glob(os.path.join(UPLOAD_DIR, "*", "*.zip")), key=os.path.getmtime):
             # 相关定义
             current_dir = os.path.dirname(x)
-            upload_path = os.path.basename(current_dir)
+
             error_dir = os.path.join(current_dir, ERROR_DIR)
             finish_dir = os.path.join(current_dir, FINISH_DIR)
 
@@ -321,6 +321,13 @@ class HUAWEIOBSManager:
 
             # 上传前校验文件
             abs_path, filetype = os.path.splitext(x)
+            if os.path.exists(os.path.join(abs_path, 'tsp-android')):
+                upload_path = os.path.basename('tsp-android')
+            elif os.path.exists(os.path.join(abs_path, 'tsp-ios')):
+                upload_path = os.path.basename('tsp-ios')
+            else:
+                RecodeLog.error(msg="打包内容错误！请检查打包！")
+                sys.exit(1)
             check_result = self.check_package(abs_path=os.path.join(abs_path, upload_path), archives=x)
             if not check_result:
                 exec_str1 = "mv {0} {1}".format(x, error_dir)
