@@ -38,7 +38,7 @@ if [ $? -ne 0 ];then
   exit 1
 fi
 mv notice.json "${1}/${COS_PATH}" || exit 1
-zip ./"${ZIP_PACKAGE}" ./version.js ./version.json ./notice.json
+zip -r ./"${ZIP_PACKAGE}" "${COS_PATH}"
 if [ "$?" -ne 0 ];then
    echo "打包文件：${ZIP_PACKAGE},失败！"
    exit 1
