@@ -8,6 +8,7 @@ import commands
 import shutil, time, datetime
 
 SUB_PATH = "tsp-android"
+FTP_ROOT = '/nfs/data/apk/'
 
 
 def useage():
@@ -130,26 +131,25 @@ def zipfile(read_file, out_dir, task_time, remote_dir):
             os.path.join(cp_dir, source_json['elements'][0]['outputFile']),
             os.path.join(file_dir, source_json['elements'][0]['outputFile'])
         )
-        zip_file = "./{0}_{1}_{2}_{3}.zip".format(
+        ftp_path = os.path.join(FTP_ROOT, remote_dir)
+        if not os.path.join(ftp_path):
+            os.makedirs(ftp_path)
+        zip_file = "{0}_{1}_{2}_{3}.zip".format(
             datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
             source_json['elements'][0]['versionName'],
             task_time,
             bucket
         )
+        abs_zip_file = os.path.join(ftp_path, zip_file)
         cmd_s = "cd {0} && zip -r {1} ${2} && rm -rf {2}".format(
             out_dir,
-            zip_file,
+            abs_zip_file,
             SUB_PATH
         )
         result, status = commands.getstatusoutput(cmd_s)
         if result != 0:
             raise Exception(status)
-        print("生成成功：{0}".format(
-            os.path.join(out_dir, '{0}_{1}_{2}.zip'.format(
-                datetime.datetime.now().strftime("%Y%m%d%H%M%S"),
-                source_json['elements'][0]['versionName'],
-                task_time
-            ))))
+        print("生成成功：{0}".format(abs_zip_file))
         # upload_ftp(local_dir=out_dir, zip_file=zip_file, remote_dir=remote_dir)
         return True
     except Exception as error:
