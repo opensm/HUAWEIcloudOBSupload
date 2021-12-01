@@ -176,10 +176,11 @@ class HUAWEIOBSManager:
 
             headers = PutObjectHeader()
             headers.contentType = 'text/plain'
-
+            upload_data = "{}/".format(upload_path) if not upload_path.endswith(os.sep) else upload_path
+            print(upload_data)
             resp = self.obs_obj.putFile(
                 bucketName=bucket, objectKey=path,
-                file_path="{}/".format(upload_path) if not upload_path.endswith(os.sep) else upload_path,
+                file_path=upload_data,
                 headers=headers
             )
             if resp.status < 300:
