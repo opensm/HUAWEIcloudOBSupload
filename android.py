@@ -7,6 +7,8 @@ import getopt
 import commands
 import shutil, time, datetime
 
+SUB_PATH = "tsp-android"
+
 
 def useage():
     print("%s -h\t#帮助文档" % sys.argv[0])
@@ -87,7 +89,7 @@ def zipfile(read_file, out_dir, task_time, remote_dir):
     if not os.path.exists(notice_current):
         print("{}不存在，请上传！".format(notice_current))
         sys.exit(1)
-    file_dir = os.path.join(out_dir, "tsp-android")
+    file_dir = os.path.join(out_dir, SUB_PATH)
     os.rename(notice_current, file_dir)
     if not os.path.exists(read_file):
         raise Exception("{0} 文件不存在！".format(read_file))
@@ -137,7 +139,7 @@ def zipfile(read_file, out_dir, task_time, remote_dir):
         cmd_s = "cd {0} && zip -r {1} ${2} && rm -rf {2}".format(
             out_dir,
             zip_file,
-            remote_dir
+            SUB_PATH
         )
         result, status = commands.getstatusoutput(cmd_s)
         if result != 0:
