@@ -197,7 +197,7 @@ def main():
         command_data['out_dir'] = command_dict.get('-o')
         command_data['task_time'] = command_dict.get('-t')
         command_data['remote_dir'] = command_dict.get('-r')
-        sub_path = os.path.join(command_data['out_dir'], command_data['remote_dir'])
+        sub_path = os.path.join(command_data['out_dir'], SUB_PATH)
         if not os.path.exists(sub_path):
             os.makedirs(sub_path)
         opt_json(
