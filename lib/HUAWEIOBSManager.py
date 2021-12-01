@@ -201,6 +201,7 @@ class HUAWEIOBSManager:
             return True
         except:
             import traceback
+            RecodeLog.error(msg="上传异常:{}".format(traceback.format_exc()))
             return False
 
     def touch_tag(self):
@@ -338,7 +339,7 @@ class HUAWEIOBSManager:
                 return False
 
             if not self.upload(archive_path=abs_path, path=upload_path):
-                print(22222222222222222222)
+                RecodeLog.error(msg="打包内容错误！请检查打包！")
                 exec_str1 = "mv {0} {1}".format(x, error_dir)
                 exec_str2 = "mv {0} {1}".format(abs_path, error_dir)
                 if not self.cmd(exec_str1) or not self.cmd(exec_str2):
