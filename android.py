@@ -11,9 +11,9 @@ import shutil, time, datetime
 def useage():
     print("%s -h\t#帮助文档" % sys.argv[0])
     print("%s -f\t#读取文件" % sys.argv[0])
-    print("%s -s\t#是强制升级" % sys.argv[0])
-    print("%s -o\t#是输出目录" % sys.argv[0])
-    print("%s -t\t#是任务时间" % sys.argv[0])
+    print("%s -s\t#强制升级" % sys.argv[0])
+    print("%s -o\t#输出目录" % sys.argv[0])
+    print("%s -t\t#任务时间" % sys.argv[0])
     print("%s -r\t#远程目录" % sys.argv[0])
 
 
@@ -84,7 +84,7 @@ def zipfile(read_file, out_dir, task_time, remote_dir):
         print("输入参数类型错误！")
         sys.exit(1)
 
-    file_dir = os.path.join(out_dir, "tsp-android")
+    file_dir = os.path.join(out_dir, remote_dir)
     if not os.path.exists(read_file):
         raise Exception("{0} 文件不存在！".format(read_file))
     if not os.path.exists(os.path.join(
@@ -130,10 +130,10 @@ def zipfile(read_file, out_dir, task_time, remote_dir):
             task_time,
             bucket
         )
-        cmd_s = "cd {0} && zip -r {1} ${2}".format(
+        cmd_s = "cd {0} && zip -r {1} ${2} && rm -rf {2}".format(
             out_dir,
             zip_file,
-            "tsp-android"
+            remote_dir
         )
         result, status = commands.getstatusoutput(cmd_s)
         if result != 0:
