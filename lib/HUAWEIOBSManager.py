@@ -178,7 +178,7 @@ class HUAWEIOBSManager:
             headers.contentType = 'text/plain'
 
             resp = ObsClient.putFile(
-                bucket, 'objectkey', upload_path,
+                bucket, path, upload_path,
                 metadata={'meta1': 'value1', 'meta2': 'value2'},
                 headers=headers
             )
