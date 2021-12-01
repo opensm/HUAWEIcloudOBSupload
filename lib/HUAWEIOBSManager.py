@@ -322,7 +322,7 @@ class HUAWEIOBSManager:
                 return False
             # 判断目录是否存在，不存在就创建
             for y in [ERROR_DIR, FINISH_DIR]:
-                dirs = os.path.join(os.path.dirname(x), y)
+                dirs = os.path.join(abs_path, y)
                 if os.path.exists(dirs):
                     continue
                 os.makedirs(dirs)
