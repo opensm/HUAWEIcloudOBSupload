@@ -70,7 +70,6 @@ class HUAWEIOBSManager:
         :return:
         """
         archives_list = []
-        print(abs_path)
         for x in ['version.json', 'version.js', 'notice.json']:
             abs_archives = os.path.join(abs_path, x)
             if not os.path.exists(abs_archives):
@@ -160,16 +159,16 @@ class HUAWEIOBSManager:
             sys.exit(1)
         return True
 
-    def upload(self, archives, path):
+    def upload(self, archive_path, path):
         """
-        :param archives:
+        :param archive_path:
         :param path:
         :return:
         """
         # 定义
-        upload_path = os.path.join(os.path.dirname(archives), path)
+        upload_path = os.path.join(os.path.dirname(archive_path), path)
         version_data = self.read_json(json_file=os.path.join(upload_path, 'version.json'))
-        achieve_base_name = os.path.basename(archives)
+        achieve_base_name = os.path.basename(archive_path)
         bucket = os.path.splitext(achieve_base_name)[-1].split("_")
 
         try:
@@ -191,7 +190,7 @@ class HUAWEIOBSManager:
                     resp.body.storageClass
                 ))
                 RecodeLog.info(msg="上传资源成功,移动文件失败,文件名:{0},\n版本信息：{1}!".format(
-                    os.path.basename(archives),
+                    os.path.basename("{}.zip".format(archive_path)),
                     json.dumps(version_data).replace(',', ',\n')))
             else:
                 RecodeLog.error(msg='errorCode:{},errorMessage:{}'.format(
@@ -337,7 +336,7 @@ class HUAWEIOBSManager:
                     self.alert(message="移动文件失败，文件名:{0}!".format(os.path.basename(x)))
                 return False
 
-            if not self.upload(archives=x, path=upload_path):
+            if not self.upload(archive_path=abs_path, path=upload_path):
                 exec_str1 = "mv {0} {1}".format(x, error_dir)
                 exec_str2 = "mv {0} {1}".format(abs_path, error_dir)
                 if not self.cmd(exec_str1) or not self.cmd(exec_str2):
