@@ -141,7 +141,7 @@ def zipfile(read_file, out_dir, task_time, remote_dir):
             bucket
         )
         abs_zip_file = os.path.join(ftp_path, zip_file)
-        cmd_s = "cd {0} && zip -r {1} ${2} && rm -rf {2}".format(
+        cmd_s = "cd {0} && zip -r {1} {2} && rm -rf {2}".format(
             out_dir,
             abs_zip_file,
             SUB_PATH
