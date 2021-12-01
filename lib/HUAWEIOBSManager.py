@@ -307,10 +307,11 @@ class HUAWEIOBSManager:
         # 按照修改时间排序
         for x in sorted(glob.glob(os.path.join(UPLOAD_DIR, "*", "*.zip")), key=os.path.getmtime):
             # 相关定义
-            current_dir = os.path.dirname(x)
+            # 上传前校验文件
+            abs_path, filetype = os.path.splitext(x)
 
-            error_dir = os.path.join(current_dir, ERROR_DIR)
-            finish_dir = os.path.join(current_dir, FINISH_DIR)
+            error_dir = os.path.join(abs_path, ERROR_DIR)
+            finish_dir = os.path.join(abs_path, FINISH_DIR)
 
             # 检查文件 检查异常则移动到报错文件夹
             if not os.path.isfile(x):
@@ -332,8 +333,6 @@ class HUAWEIOBSManager:
             if not self.unzip_package(package=x):
                 continue
 
-            # 上传前校验文件
-            abs_path, filetype = os.path.splitext(x)
             if os.path.exists(os.path.join(abs_path, 'tsp-android')):
                 upload_path = 'tsp-android'
             elif os.path.exists(os.path.join(abs_path, 'tsp-ios')):
@@ -343,7 +342,6 @@ class HUAWEIOBSManager:
                 sys.exit(1)
             check_result = self.check_package(abs_path=os.path.join(abs_path, upload_path), archives=x)
             if not check_result:
-                print(22222222222222222221)
                 exec_str1 = "mv {0} {1}".format(x, error_dir)
                 exec_str2 = "mv {0} {1}".format(abs_path, error_dir)
                 if not self.cmd(exec_str1) or not self.cmd(exec_str2):
@@ -360,7 +358,6 @@ class HUAWEIOBSManager:
                     ))
                     return False
             else:
-                print(22222222222222222223)
                 self.alert(message="上传资源成功，文件名:{0}!".format(os.path.basename(x)))
                 exec_str1 = "mv {0} {1}".format(x, finish_dir)
                 exec_str2 = "mv {0} {1}".format(abs_path, finish_dir)
