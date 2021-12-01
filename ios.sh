@@ -1,3 +1,9 @@
+#!/bin/bash
+# IOS打包上传脚本，By bu4 Yaoshaoqiang
+
+## 定义变量
+FTP_ROOT="/nfs/data/apk/"
+FTP_PATH="$FTP_ROOT"/"$7"
 if [ $# -ne 7 ];then
   echo "$0 \${WORKSPACE} \${name} \${page} \${code} \${FORCE_UPDATE} \${TASKTIME} \${version_path} "
   exit 1
@@ -11,9 +17,9 @@ if [ ! -f "./notice.json" ];then
     echo "APPStore更新必须更新notice.json"
     exit 1
 fi
-if [ $7 == "dev" ];then
+if [ "$7" == "dev" ];then
   bucket="tongyichelianwang-dev"
-elif [ $7 == "test" ]; then
+elif [ "$7" == "test" ]; then
   bucket="tongyichelianwang-test"
 elif [ $7 == "prod" ]; then
   bucket="chelianwang-prod"
@@ -28,6 +34,7 @@ if [ ! -d "${1}/${COS_PATH}" ];then
 fi
 ZIP_PACKAGE=$(date "+%Y%m%d%H%M%S")_"${2}"_"${6}"_"$bucket".zip
 echo -e "{\"name\":\"${2}\",\"date\":\"$(date "+%Y%m%d")\",\"code\":${4},\"mustUpgrade\":${5}}" > "${1}/${COS_PATH}"/version.json
+# shellcheck disable=SC2181
 if [ $? -ne 0 ];then
   echo "${1}/version.json 生成失败！"
   exit 1
@@ -43,4 +50,17 @@ if [ "$?" -ne 0 ];then
    echo "打包文件：${ZIP_PACKAGE},失败！"
    exit 1
 fi
-rm -rf "${1}"/"${COS_PATH}"
+
+if [ ! -d "${FTP_PATH}" ];then
+  mkdir -pv "${FTP_PATH}" || exit 1
+fi
+
+mv ./"${ZIP_PACKAGE}" "${FTP_PATH}"
+# shellcheck disable=SC2181
+if [ "$?" -ne 0 ];then
+   echo "上传文件：${ZIP_PACKAGE},到：${FTP_PATH},失败！"
+   exit 1
+fi
+echo "上传文件：${ZIP_PACKAGE},到：${FTP_PATH},成功！"
+# shellcheck disable=SC2115
+rm -rf "${1}/${COS_PATH}/"
