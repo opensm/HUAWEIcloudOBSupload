@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding:utf-8 -*-
 # 华为云上传文件到OBS
 HUAWEI_OBS_AUTH = {
     "access_key_id": "",
