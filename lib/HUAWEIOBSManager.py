@@ -70,6 +70,7 @@ class HUAWEIOBSManager:
         :return:
         """
         archives_list = []
+        print(abs_path)
         for x in ['version.json', 'version.js', 'notice.json']:
             abs_archives = os.path.join(abs_path, x)
             if not os.path.exists(abs_archives):
@@ -322,9 +323,9 @@ class HUAWEIOBSManager:
             # 上传前校验文件
             abs_path, filetype = os.path.splitext(x)
             if os.path.exists(os.path.join(abs_path, 'tsp-android')):
-                upload_path = os.path.basename('tsp-android')
+                upload_path = 'tsp-android'
             elif os.path.exists(os.path.join(abs_path, 'tsp-ios')):
-                upload_path = os.path.basename('tsp-ios')
+                upload_path = 'tsp-ios'
             else:
                 RecodeLog.error(msg="打包内容错误！请检查打包！")
                 sys.exit(1)
