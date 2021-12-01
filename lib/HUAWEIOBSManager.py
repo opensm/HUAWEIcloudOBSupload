@@ -310,8 +310,8 @@ class HUAWEIOBSManager:
             # 上传前校验文件
             abs_path, filetype = os.path.splitext(x)
 
-            error_dir = os.path.join(abs_path, ERROR_DIR)
-            finish_dir = os.path.join(abs_path, FINISH_DIR)
+            error_dir = os.path.join(os.path.dirname(x), ERROR_DIR)
+            finish_dir = os.path.join(os.path.dirname(x), FINISH_DIR)
 
             # 检查文件 检查异常则移动到报错文件夹
             if not os.path.isfile(x):
@@ -322,7 +322,7 @@ class HUAWEIOBSManager:
                 return False
             # 判断目录是否存在，不存在就创建
             for y in [ERROR_DIR, FINISH_DIR]:
-                dirs = os.path.join(abs_path, y)
+                dirs = os.path.join(os.path.dirname(x), y)
                 if os.path.exists(dirs):
                     continue
                 os.makedirs(dirs)
