@@ -166,7 +166,7 @@ class HUAWEIOBSManager:
         :return:
         """
         # 定义
-        upload_path = os.path.join(os.path.dirname(archive_path), path)
+        upload_path = os.path.join(archive_path, path)
         version_data = self.read_json(json_file=os.path.join(upload_path, 'version.json'))
         achieve_base_name = os.path.basename(archive_path)
         bucket = os.path.splitext(achieve_base_name)[-1].split("_")
