@@ -183,21 +183,33 @@ class HUAWEIOBSManager:
                 file_path=upload_data,
                 headers=headers
             )
-            if resp.status < 300:
-                RecodeLog.info(msg='requestId:{},etag:{},versionId:{},storageClass:{}'.format(
-                    resp.requestId, resp.body.etag,
-                    resp.body.versionId,
-                    resp.body.storageClass
-                ))
-                RecodeLog.info(msg="上传资源成功,移动文件失败,文件名:{0},\n版本信息：{1}!".format(
-                    os.path.basename("{}.zip".format(archive_path)),
-                    json.dumps(version_data).replace(',', ',\n')))
+            if isinstance(resp, list):
+                for k, v in resp:
+                    if v.status < 300:
+                        RecodeLog.info(msg='requestId:{},etag:{},versionId:{},storageClass:{}'.format(
+                            v.requestId, v.body.etag,
+                            v.body.versionId,
+                            v.body.storageClass
+                        ))
+                        RecodeLog.info(msg="上传资源成功,移动文件失败,文件名:{0},\n版本信息：{1}!".format(
+                            os.path.basename("{}.zip".format(archive_path)),
+                            json.dumps(version_data).replace(',', ',\n')))
             else:
-                RecodeLog.error(msg='errorCode:{},errorMessage:{}'.format(
-                    resp.errorCode,
-                    resp.errorMessage
-                ))
-                raise Exception("上传异常！")
+                if resp.status < 300:
+                    RecodeLog.info(msg='requestId:{},etag:{},versionId:{},storageClass:{}'.format(
+                        resp.requestId, resp.body.etag,
+                        resp.body.versionId,
+                        resp.body.storageClass
+                    ))
+                    RecodeLog.info(msg="上传资源成功,移动文件失败,文件名:{0},\n版本信息：{1}!".format(
+                        os.path.basename("{}.zip".format(archive_path)),
+                        json.dumps(version_data).replace(',', ',\n')))
+                else:
+                    RecodeLog.error(msg='errorCode:{},errorMessage:{}'.format(
+                        resp.errorCode,
+                        resp.errorMessage
+                    ))
+                    raise Exception("上传异常！")
             return True
         except:
             import traceback
