@@ -43,3 +43,4 @@ if [ "$?" -ne 0 ];then
    echo "打包文件：${ZIP_PACKAGE},失败！"
    exit 1
 fi
+rm -rf "${1}"/"${COS_PATH}"
