@@ -83,8 +83,12 @@ def zipfile(read_file, out_dir, task_time, remote_dir):
     else:
         print("输入参数类型错误！")
         sys.exit(1)
-
-    file_dir = os.path.join(out_dir, remote_dir)
+    notice_current = os.path.join(out_dir, 'notice.json')
+    if not os.path.exists(notice_current):
+        print("{}不存在，请上传！".format(notice_current))
+        sys.exit(1)
+    file_dir = os.path.join(out_dir, "tsp-android")
+    os.rename(notice_current, file_dir)
     if not os.path.exists(read_file):
         raise Exception("{0} 文件不存在！".format(read_file))
     if not os.path.exists(os.path.join(
