@@ -169,7 +169,7 @@ class HUAWEIOBSManager:
         upload_path = os.path.join(archive_path, path)
         version_data = self.read_json(json_file=os.path.join(upload_path, 'version.json'))
         achieve_base_name = os.path.basename(archive_path)
-        bucket = os.path.splitext(achieve_base_name)[-1].split("_")
+        bucket = os.path.splitext(achieve_base_name)[-1].split("_")[-1]
 
         try:
             from obs import PutObjectHeader
@@ -179,10 +179,8 @@ class HUAWEIOBSManager:
 
             resp = self.obs_obj.putFile(
                 bucket, path, upload_path,
-                metadata={'meta1': 'value1', 'meta2': 'value2'},
                 headers=headers
             )
-
             if resp.status < 300:
                 RecodeLog.info(msg='requestId:{},etag:{},versionId:{},storageClass:{}'.format(
                     resp.requestId, resp.body.etag,
