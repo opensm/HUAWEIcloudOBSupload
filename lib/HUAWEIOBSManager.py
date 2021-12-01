@@ -330,6 +330,7 @@ class HUAWEIOBSManager:
                 sys.exit(1)
             check_result = self.check_package(abs_path=os.path.join(abs_path, upload_path), archives=x)
             if not check_result:
+                print(22222222222222222221)
                 exec_str1 = "mv {0} {1}".format(x, error_dir)
                 exec_str2 = "mv {0} {1}".format(abs_path, error_dir)
                 if not self.cmd(exec_str1) or not self.cmd(exec_str2):
@@ -337,6 +338,7 @@ class HUAWEIOBSManager:
                 return False
 
             if not self.upload(archive_path=abs_path, path=upload_path):
+                print(22222222222222222222)
                 exec_str1 = "mv {0} {1}".format(x, error_dir)
                 exec_str2 = "mv {0} {1}".format(abs_path, error_dir)
                 if not self.cmd(exec_str1) or not self.cmd(exec_str2):
@@ -345,6 +347,7 @@ class HUAWEIOBSManager:
                     ))
                     return False
             else:
+                print(22222222222222222223)
                 self.alert(message="上传资源成功，文件名:{0}!".format(os.path.basename(x)))
                 exec_str1 = "mv {0} {1}".format(x, finish_dir)
                 exec_str2 = "mv {0} {1}".format(abs_path, finish_dir)
