@@ -410,7 +410,7 @@ class HUAWEIOBSManager:
         string_to_sign = '{}\n{}'.format(timestamp, secret)
         string_to_sign_enc = string_to_sign.encode('utf-8')
         hmac_code = hmac.new(secret_enc, string_to_sign_enc, digestmod=hashlib.sha256).digest()
-        sign = urllib.parse.quote_plus(base64.b64encode(hmac_code))
+        sign = urllib.quote_plus(base64.b64encode(hmac_code))
         url = "{0}&timestamp={1}&sign={2}".format(url, timestamp, sign)
         x = requests.post(url=url, data=json.dumps(send_data), headers=headers)
         if 'errcode' in x.json():
