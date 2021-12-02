@@ -8,7 +8,7 @@ import sys
 import time
 
 import commands
-from obs import ObsClient
+from obs import ObsClient, LogConf
 
 from Log import RecodeLog
 from settings import *
@@ -27,6 +27,7 @@ class HUAWEIOBSManager:
         self.tag_file = os.path.join(LOG_DIR, 'obs.tag')
         try:
             self.obs_obj = ObsClient(**HUAWEI_OBS_AUTH)
+            self.obs_obj.initLog()
         except Exception as error:
             print("验证失败：{}".format(error))
             sys.exit(1)
@@ -177,7 +178,6 @@ class HUAWEIOBSManager:
             headers = PutObjectHeader()
             headers.contentType = 'text/plain'
             upload_data = "{}/".format(upload_path) if not upload_path.endswith(os.sep) else upload_path
-            print(upload_data)
             resp = self.obs_obj.putFile(
                 bucketName=bucket, objectKey=path,
                 file_path=upload_data,
