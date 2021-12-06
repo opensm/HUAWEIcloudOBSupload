@@ -349,16 +349,17 @@ class HUAWEIOBSManager:
                 return False
 
             if not self.upload(archive_path=abs_path, path=upload_path):
+                self.alert(message="客户端资源更新提示：上传资源失败。文件名:{0}!".format(os.path.basename(x)))
                 RecodeLog.error(msg="打包内容错误！请检查打包！")
                 exec_str1 = "mv {0} {1}".format(x, error_dir)
                 exec_str2 = "mv {0} {1}".format(abs_path, error_dir)
                 if not self.cmd(exec_str1) or not self.cmd(exec_str2):
-                    self.alert(message="上传资源失败,移动文件失败,文件名:{0}!".format(
+                    self.alert(message="客户端资源更新提示：移动文件失败。文件名:{0}!".format(
                         os.path.basename(x)
                     ))
                     return False
             else:
-                self.alert(message="上传资源成功，文件名:{0}!".format(os.path.basename(x)))
+                self.alert(message="客户端资源更新提示：上传资源成功。文件名:{0}!".format(os.path.basename(x)))
                 exec_str1 = "mv {0} {1}".format(x, finish_dir)
                 exec_str2 = "mv {0} {1}".format(abs_path, finish_dir)
                 if not self.cmd(exec_str1) or not self.cmd(exec_str2):
