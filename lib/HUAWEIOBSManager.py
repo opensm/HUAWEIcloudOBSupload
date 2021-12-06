@@ -358,7 +358,7 @@ class HUAWEIOBSManager:
                     ))
                     return False
             else:
-                self.alert(message="上传资源成功，文件名:{0}!".format(os.path.basename(x)))
+                # self.alert(message="上传资源成功，文件名:{0}!".format(os.path.basename(x)))
                 exec_str1 = "mv {0} {1}".format(x, finish_dir)
                 exec_str2 = "mv {0} {1}".format(abs_path, finish_dir)
                 if not self.cmd(exec_str1) or not self.cmd(exec_str2):
