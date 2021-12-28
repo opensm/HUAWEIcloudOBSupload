@@ -78,6 +78,54 @@ class HUAWEIOBSManager:
                 self.alert(message="{1}文件异常，文件个数：0,请检查压缩包:{0}！".format(archives, abs_archives))
                 return False
             archives_list.append(abs_archives)
+        kind_app = abs_archives.split(os.sep)[-1]
+        if 'ios' in kind_app:
+            return self.check_ios(abs_path=abs_path, archives_list=archives_list)
+        elif 'android' in kind_app:
+            return self.check_android(abs_path=abs_path, archives_list=archives_list)
+        else:
+            raise TypeError("获取到的类型错误！")
+
+    def check_ios(self, abs_path, archives_list):
+        """
+        :return:
+        """
+
+        json_version_data = self.read_json(json_file=os.path.join(abs_path, 'version.json'))
+        if not json_version_data:
+            RecodeLog.error(msg="{0}:数据读取异常！".format(os.path.join(abs_path, 'version.json')))
+            self.alert(message="{0}:数据读取异常！".format(os.path.join(abs_path, 'version.json')))
+            return False
+
+        ios_url = json_version_data['code']
+        version = json_version_data['name']
+        # 检查js
+        js_version_data = self.read_js(js_file=os.path.join(abs_path, 'version.js'))
+        js_version_status = False
+        js_package_status = False
+        for y in js_version_data:
+            if "'name':'{0}'".format(version) in y.replace(' ', '').strip('\n'):
+                js_version_status = True
+            if "'code':'{0}'".format(ios_url) in y.replace(' ', '').strip('\n'):
+                js_package_status = True
+        if js_version_status and js_package_status:
+            RecodeLog.info(msg="{0},{1}信息对应，检查无问题！".format(
+                *[os.path.basename(x) for x in archives_list]
+            ))
+            return archives_list
+        else:
+            RecodeLog.error(msg="{0},{1}信息不对应对应，检查不通过，请打包人员检查！".format(
+                *[os.path.basename(x) for x in archives_list]
+            ))
+            self.alert(message="{0},{1}信息不对应对应，检查不通过，请打包人员检查！".format(
+                *[os.path.basename(x) for x in archives_list]
+            ))
+            return False
+
+    def check_android(self, abs_path, archives_list):
+        """
+        :return:
+        """
         json_version_data = self.read_json(json_file=os.path.join(abs_path, 'version.json'))
         if not json_version_data:
             RecodeLog.error(msg="{0}:数据读取异常！".format(os.path.join(abs_path, 'version.json')))
