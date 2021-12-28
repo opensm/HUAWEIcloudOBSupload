@@ -239,7 +239,7 @@ class HUAWEIOBSManager:
                             v.body.versionId,
                             v.body.storageClass
                         ))
-                        RecodeLog.info(msg="上传资源成功,移动文件失败,文件名:{0},\n版本信息：{1}!".format(
+                        RecodeLog.info(msg="上传资源成功,文件名:{0},\n版本信息：{1}!".format(
                             os.path.basename("{}.zip".format(archive_path)),
                             json.dumps(version_data).replace(',', ',\n')))
             else:
@@ -249,7 +249,7 @@ class HUAWEIOBSManager:
                         resp.body.versionId,
                         resp.body.storageClass
                     ))
-                    RecodeLog.info(msg="上传资源成功,移动文件失败,文件名:{0},\n版本信息：{1}!".format(
+                    RecodeLog.info(msg="上传资源成功,文件名:{0},\n版本信息：{1}!".format(
                         os.path.basename("{}.zip".format(archive_path)),
                         json.dumps(version_data).replace(',', ',\n')))
                 else:
