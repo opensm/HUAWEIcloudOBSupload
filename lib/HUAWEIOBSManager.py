@@ -78,7 +78,7 @@ class HUAWEIOBSManager:
                 self.alert(message="{1}文件异常，文件个数：0,请检查压缩包:{0}！".format(archives, abs_archives))
                 return False
             archives_list.append(abs_archives)
-        kind_app = abs_archives.split(os.sep)[-1]
+        kind_app = abs_archives.split(os.sep)[-2]
         if 'ios' in kind_app:
             return self.check_ios(abs_path=abs_path, archives_list=archives_list)
         elif 'android' in kind_app:
