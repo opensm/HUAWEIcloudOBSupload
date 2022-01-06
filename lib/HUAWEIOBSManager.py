@@ -413,6 +413,7 @@ class HUAWEIOBSManager:
                     ))
                     os.remove(self.tag_file)
                     return False
+                os.remove(self.tag_file)
             else:
                 self.alert(message="客户端资源更新提示：上传资源成功。文件名:{0}!".format(os.path.basename(x)))
                 exec_str1 = "mv {0} {1}".format(x, finish_dir)
