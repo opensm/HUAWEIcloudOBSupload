@@ -140,8 +140,12 @@ class HUAWEIOBSManager:
             self.alert(message="文件不存在：{0}".format(abs_package))
             return False
         if package.split("_")[2] != version:
-            RecodeLog.error(msg="获取的文件版本：{0}和version.json版本不一致：{1}".format(package, version))
-            self.alert(message="获取的文件版本：{0}和version.json版本不一致：{1}".format(package, version))
+            RecodeLog.error(msg="获取的文件版本：{0}和version.json版本不一致：文件版本：{1}，json文件版本：{2}".format(
+                package, package.split("_")[2], version
+            ))
+            self.alert(message="获取的文件版本：{0}和version.json版本不一致：文件版本：{1}，json文件版本：{2}".format(
+                package, package.split("_")[2], version
+            ))
             return False
         # 检查js
         js_version_data = self.read_js(js_file=os.path.join(abs_path, 'version.js'))
