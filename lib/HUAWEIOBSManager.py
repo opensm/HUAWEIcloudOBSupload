@@ -367,6 +367,7 @@ class HUAWEIOBSManager:
                 exec_str = "mv {0} {1}".format(x, error_dir)
                 if not self.cmd(exec_str):
                     self.alert(message="移动文件失败，文件名:{0}!".format(os.path.basename(x)))
+                os.remove(self.tag_file)
                 return False
             # 判断目录是否存在，不存在就创建
             for y in [ERROR_DIR, FINISH_DIR]:
@@ -394,6 +395,7 @@ class HUAWEIOBSManager:
                 exec_str2 = "mv {0} {1}".format(abs_path, error_dir)
                 if not self.cmd(exec_str1) or not self.cmd(exec_str2):
                     self.alert(message="移动文件失败，文件名:{0}!".format(os.path.basename(x)))
+                    os.remove(self.tag_file)
                 return False
 
             if not self.upload(archive_path=abs_path, path=upload_path):
@@ -405,6 +407,7 @@ class HUAWEIOBSManager:
                     self.alert(message="客户端资源更新提示：移动文件失败。文件名:{0}!".format(
                         os.path.basename(x)
                     ))
+                    os.remove(self.tag_file)
                     return False
             else:
                 self.alert(message="客户端资源更新提示：上传资源成功。文件名:{0}!".format(os.path.basename(x)))
